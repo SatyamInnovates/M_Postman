@@ -1,0 +1,36 @@
+body{
+    background-color: rgb(43, 39, 39);
+    color: white;
+    font-style: italic;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+#heading{
+    display: flex;
+    justify-content: center;
+    color: greenyellow;
+    padding: 10px;
+
+}
+
+#url{
+    font-size: 30px;
+}
+
+.input-url{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin: 30px;
+    font-size: 30px;
+}
+
+
+
+#method{
+    font-size: 30px;
+}
+
+#send{
+    font-size: 40px;
+}
