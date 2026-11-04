@@ -16,6 +16,7 @@ app.add_middleware(
 
 app.include_router(router)
 
+# main app here let me drink waterrr
 
 
 

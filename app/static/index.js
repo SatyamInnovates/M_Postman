@@ -2,19 +2,47 @@
 const urlInput = document.getElementById('url');
 const methodSelect = document.getElementById('method');
 const sendButton = document.getElementById('send');
-
 const container = document.querySelector('.response_txt');
+const bodyInput = document.getElementById('request_body')
+const addheaderbutton = document.getElementById("add_header");
+const headerSection = document.getElementById("headers-section");
+
+
+
+
+addheaderbutton.addEventListener("click",() => {
+    const headerRow = document.createElement("div")
+    headerRow.classList.add("header-row");
+    const keyInput = document.createElement("input");
+    keyInput.type = "text";
+    keyInput.placeholder = "Header Key";
+
+    const valueInput = document.createElement("input");
+    valueInput.type = "text";
+    valueInput.placeholder = "Header Value";
+
+    keyInput.classList.add("header-key");
+    valueInput.classList.add("header-value");
+    headerRow.appendChild(keyInput)
+    headerRow.appendChild(valueInput);
+
+    headerSection.appendChild(headerRow)
+
+})
+
+
+
 
 sendButton.addEventListener('click', async () => {
     try {
         const requestData = {
             method: methodSelect.value,
             url: urlInput.value,
-            headers: {},
+            headers: collectHeaders(),
             params: {},
-            body: null
+            body: bodyInput.value ? JSON.parse(bodyInput.value) : null
         };
-
+        console.log("Sending headers:", requestData.headers);
         const response = await fetch("http://127.0.0.1:8000/api/request", {
             method: "POST",
             headers: {
@@ -24,7 +52,7 @@ sendButton.addEventListener('click', async () => {
         });
 
         const result = await response.json();
-        console.log("Full response:", result);
+        console.log(result);
         console.log("Response body:", result.body);
         container.innerHTML = "";
         const heading = document.createElement("h3");
@@ -48,3 +76,29 @@ sendButton.addEventListener('click', async () => {
         console.error(error);
     }
 });
+
+
+
+
+function collectHeaders() {
+    const keys = document.querySelectorAll(".header-key");
+    const values = document.querySelectorAll(".header-value");
+
+    const headers = {};
+
+    keys.forEach((key, index) => {
+        const headerName = key.value.trim();
+        const headerValue = values[index].value.trim();
+
+        if (headerName && headerValue) {
+            headers[headerName] = headerValue;
+        }
+    });
+
+    return headers;
+}
+console.log(collectHeaders());
+
+
+
+

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,31 +8,90 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-    <h1 id="heading">M_Postman</h1>
-    <div class="input-url">
-        <input type="url" id="url" placeholder="Enter API url">
 
+    <h1 id="heading">M_Postman</h1>
+
+    <div class="input-url">
+
+        <input type="url" id="url" placeholder="Enter API URL">
 
         <label for="method">Choose a method:</label>
-    <select id="method">
-    <option value="GET">GET</option>
-    <option value="POST">POST</option>
-    <option value="PUT">PUT</option>
-    <option value="PATCH">PATCH</option>
-    <option value="DELETE">DELETE</option>
-    </select>
 
-    <button id="send">Send</button>
+        <select id="method">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="PATCH">PATCH</option>
+            <option value="DELETE">DELETE</option>
+        </select>
+
+        <button id="send">Send</button>
+
     </div>
+
+    <div class="request-tabs">
+
+        <div class="tab-buttons">
+            <button id="params-tab">Params</button>
+            <button id="headers-tab">Headers</button>
+            <button id="body-tab">Body</button>
+        </div>
+
+        <!-- Params Section -->
+        <div id="params-section">
+            <h3>Query Parameters</h3>
+        </div>
+
+        <!-- Headers Section -->
+
+    <div id="headers-section">
+
+        <h3>Request Headers</h3>
+
+        <div class="header-row">
+            <input
+                type="text"
+                id="header_key"
+                class="header-key"
+                placeholder="Header Key"
+            >
+
+            <input
+                type="text"
+                id="header_value"
+                class="header-value"
+                placeholder="Header Value"
+            >
+        </div>
+
+        <button id="add_header" type="button">
+            + Add Header
+        </button>
+
+    </div>        
+
+            
+
+        <!-- Body Section -->
+        <div id="body-section">
+            <h3>Request Body (JSON)</h3>
+
+            <textarea
+                id="request_body"
+                placeholder='{"title":"My first post","userId":1}'
+            ></textarea>
+        </div>
+
+    </div>
+
+    
+
 
     <div class="response_txt">
         <h2>Response</h2>
     </div>
-    
-
-
 
     <script src="index.js"></script>
+
 </body>
 </html>
