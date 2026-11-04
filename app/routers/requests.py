@@ -26,6 +26,7 @@ async def send_request(data: RequestSchema):
             except ValueError:
                 body = response.text
         print(data.headers)
+        print(f"params:{data.params}")
     except httpx.TimeoutException:
         raise HTTPException(
             status_code=504,

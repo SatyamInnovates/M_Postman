@@ -37,10 +37,31 @@
             <button id="body-tab">Body</button>
         </div>
 
-        <!-- Params Section -->
-        <div id="params-section">
-            <h3>Query Parameters</h3>
+
+    <!-- Params Section -->
+    <div id="params-section">
+        <h3>Query Parameters</h3>
+
+        <div id="params-rows">
+            <div class="q_p_s">
+                <input
+                    type="text"
+                    class="q_p_s-key"
+                    placeholder="Key (e.g. category)"
+                >
+
+                <input
+                    type="text"
+                    class="q_p_s-value"
+                    placeholder="Value (e.g. books)"
+                >
+            </div>
         </div>
+
+        <button id="add_parameter" type="button">
+            + Add Parameter
+        </button>
+    </div>
 
         <!-- Headers Section -->
 
@@ -68,10 +89,9 @@
             + Add Header
         </button>
 
-    </div>        
-
-            
-
+    </div>    
+    
+        
         <!-- Body Section -->
         <div id="body-section">
             <h3>Request Body (JSON)</h3>

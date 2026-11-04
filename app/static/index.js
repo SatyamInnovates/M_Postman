@@ -3,16 +3,42 @@ const urlInput = document.getElementById('url');
 const methodSelect = document.getElementById('method');
 const sendButton = document.getElementById('send');
 const container = document.querySelector('.response_txt');
-const bodyInput = document.getElementById('request_body')
+const bodyInput = document.getElementById('request_body');
 const addheaderbutton = document.getElementById("add_header");
 const headerSection = document.getElementById("headers-section");
 
+const addqbsButtion = document.getElementById("add_parameter");
+const qbsSection = document.getElementById("params-rows");
 
 
+addqbsButtion.addEventListener("click", () => {
 
-addheaderbutton.addEventListener("click",() => {
-    const headerRow = document.createElement("div")
+    const qbsRow = document.createElement("div");
+    qbsRow.classList.add('q_p_s');
+
+    const keyInput = document.createElement("input");
+    keyInput.type = "text";
+    keyInput.placeholder = "QBS Key";
+
+    const valueInput = document.createElement("input");
+    valueInput.type = "text";
+    valueInput.placeholder = "Value";
+
+    keyInput.classList.add("q_p_s-key");
+    valueInput.classList.add("q_p_s-value");
+
+    qbsRow.appendChild(keyInput);
+    qbsRow.appendChild(valueInput);
+
+    qbsSection.appendChild(qbsRow);
+});
+
+
+addheaderbutton.addEventListener("click", () => {
+
+    const headerRow = document.createElement("div");
     headerRow.classList.add("header-row");
+
     const keyInput = document.createElement("input");
     keyInput.type = "text";
     keyInput.placeholder = "Header Key";
@@ -23,14 +49,13 @@ addheaderbutton.addEventListener("click",() => {
 
     keyInput.classList.add("header-key");
     valueInput.classList.add("header-value");
-    headerRow.appendChild(keyInput)
+
+    headerRow.appendChild(keyInput);
     headerRow.appendChild(valueInput);
 
-    headerSection.appendChild(headerRow)
+    headerSection.appendChild(headerRow);
 
-})
-
-
+});
 
 
 sendButton.addEventListener('click', async () => {
@@ -39,10 +64,12 @@ sendButton.addEventListener('click', async () => {
             method: methodSelect.value,
             url: urlInput.value,
             headers: collectHeaders(),
-            params: {},
+            params: collectqbs(),
             body: bodyInput.value ? JSON.parse(bodyInput.value) : null
         };
+
         console.log("Sending headers:", requestData.headers);
+
         const response = await fetch("http://127.0.0.1:8000/api/request", {
             method: "POST",
             headers: {
@@ -52,9 +79,12 @@ sendButton.addEventListener('click', async () => {
         });
 
         const result = await response.json();
+
         console.log(result);
         console.log("Response body:", result.body);
+
         container.innerHTML = "";
+
         const heading = document.createElement("h3");
         heading.textContent = `Status Code: ${result.status_code}`;
         container.appendChild(heading);
@@ -77,9 +107,6 @@ sendButton.addEventListener('click', async () => {
     }
 });
 
-
-
-
 function collectHeaders() {
     const keys = document.querySelectorAll(".header-key");
     const values = document.querySelectorAll(".header-value");
@@ -97,8 +124,25 @@ function collectHeaders() {
 
     return headers;
 }
+
+function collectqbs() {
+    const keys = document.querySelectorAll(".q_p_s-key");
+    const values = document.querySelectorAll(".q_p_s-value");
+
+    const qbs_parameters = {};
+
+    keys.forEach((key, index) => {
+        const qpsName = key.value.trim();
+        const qpsValue = values[index].value.trim();
+
+        if (qpsName && qpsValue) {
+            qbs_parameters[qpsName] = qpsValue;
+        }
+    });
+
+    return qbs_parameters;
+}
+
+
 console.log(collectHeaders());
-
-
-
-
+console.log(collectqbs());
