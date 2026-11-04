@@ -30,6 +30,7 @@ async def send_request(data: RequestSchema):
             status_code=504,
             detail="Request timed out"
         )  
+
         
     except httpx.RequestError:
         raise HTTPException(

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M-Postman</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <h1 id="heading">M_Postman</h1>
+    <div class="input-url">
+        <input type="url" id="url" placeholder="Enter API url">
+
+
+        <label for="method">Choose a method:</label>
+    <select id="method">
+    <option value="GET">GET</option>
+    <option value="POST">POST</option>
+    <option value="PUT">PUT</option>
+    <option value="PATCH">PATCH</option>
+    <option value="DELETE">DELETE</option>
+    </select>
+    
+    <button id="send">Send</button>
+    </div>
+
+
+    <pre id="response_text">Response will appear here...</pre>
+
+
+
+    <script src="index.js"></script>
+</body>
+</html>
