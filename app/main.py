@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.routers.requests import router
 
 app = FastAPI(
     title="Mini Postman",
@@ -6,12 +7,5 @@ app = FastAPI(
     version="1.0.0"
 )
 
+app.include_router(router)
 
-@app.get("/")
-async def root():
-    return {"message": "Mini Postman API is running"}
-
-
-@app.get("/health")
-async def health():
-    return {"status": "healthy"}
