@@ -9,14 +9,14 @@ const addqbsButtion = document.getElementById("add_parameter");
 const params_button = document.getElementById("params-tab")
 
 const headers_button = document.getElementById("headers-tab")
-
 const body_button = document.getElementById("body-tab")
-
 const qbsSection = document.getElementById("params-rows");
 const params_section = document.getElementById("params-section");
 const headerSection = document.getElementById("headers-section");
 const bodySection = document.getElementById("body-section");
-
+const responseBodySection = document.getElementById("response-body-section")
+const responseHeadersSection = document.getElementById("response-headers-section"
+);
 
 
 addqbsButtion.addEventListener("click", () => {
@@ -92,7 +92,6 @@ sendButton.addEventListener('click', async () => {
         console.log("Response body:", result.body);
 
         container.innerHTML = "";
-
         const heading = document.createElement("h3");
         heading.textContent = `Status Code: ${result.status_code}`;
         container.appendChild(heading);
@@ -101,19 +100,64 @@ sendButton.addEventListener('click', async () => {
         time.textContent = `Response Time: ${result.response_time.toFixed(2)} ms`;
         container.appendChild(time);
 
-        const bodyHeading = document.createElement("h3");
-        bodyHeading.textContent = "Response Body";
-        container.appendChild(bodyHeading);
+        const coreAnswer = result.body?.choices?.[0]?.message?.content;
+
+        if (coreAnswer) {
+            const coreSection = document.createElement("div");
+
+            const coreHeading = document.createElement("h3");
+            coreHeading.textContent = "Core Answer";
+
+            const coreText = document.createElement("pre");
+            coreText.textContent = coreAnswer;
+
+            coreSection.appendChild(coreHeading);
+            coreSection.appendChild(coreText);
+            container.appendChild(coreSection);
+        }
+
+        responseBodySection.innerHTML = "<h3>Response Body</h3>";
 
         const responseBody = document.createElement("pre");
         responseBody.textContent = JSON.stringify(result.body, null, 2);
-        container.appendChild(responseBody);
 
+        responseBodySection.appendChild(responseBody);
+        container.appendChild(responseBodySection);
+
+
+        responseHeadersSection.innerHTML = "<h3>Useful Response Headers</h3>";
+
+
+        const usefulHeaders = [
+            "content-type",
+            "content-length",
+            "date",
+            "server",
+            "cache-control",
+            "x-ratelimit-remaining-requests"
+        ]
+
+        const filteredHeaders = {};
+
+        usefulHeaders.forEach(header => {
+            
+            if (result.headers[header]) {
+                filteredHeaders[header] = result.headers[header];
+            }
+        });
+
+        const headersDisplay = document.createElement("pre");
+        headersDisplay.textContent = JSON.stringify(filteredHeaders, null, 2);
+
+        responseHeadersSection.appendChild(headersDisplay);
+        container.appendChild(responseHeadersSection);
+        
     } catch (error) {
         container.textContent = `Error: ${error.message}`;
         console.error(error);
     }
 });
+
 
 function collectHeaders() {
     const keys = document.querySelectorAll(".header-key");
@@ -156,8 +200,6 @@ console.log(collectHeaders());
 console.log(collectqbs());
 
 
-
-
 function showSection(section,activeButton) {
     params_section.style.display = "none";
     headerSection.style.display = "none";
@@ -174,8 +216,6 @@ function showSection(section,activeButton) {
 }
 
 
-
-
 params_button.addEventListener("click", () => {
     showSection(params_section,params_button);
 });
@@ -187,6 +227,3 @@ headers_button.addEventListener("click", () => {
 body_button.addEventListener("click", () => {
     showSection(bodySection,body_button);
 });
-
-
-
