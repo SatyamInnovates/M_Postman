@@ -34,3 +34,25 @@ body{
 #send{
     font-size: 40px;
 }
+
+
+#headers-section,
+#body-section {
+    display: none;
+}
+
+.tab-buttons button {
+    background-color: #000000;
+    color: #f7f7f7;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+.tab-buttons button.active {
+    background-color: #08d461;
+    color: rgb(18, 16, 16);
+}
+

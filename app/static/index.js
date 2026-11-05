@@ -5,10 +5,18 @@ const sendButton = document.getElementById('send');
 const container = document.querySelector('.response_txt');
 const bodyInput = document.getElementById('request_body');
 const addheaderbutton = document.getElementById("add_header");
-const headerSection = document.getElementById("headers-section");
-
 const addqbsButtion = document.getElementById("add_parameter");
+const params_button = document.getElementById("params-tab")
+
+const headers_button = document.getElementById("headers-tab")
+
+const body_button = document.getElementById("body-tab")
+
 const qbsSection = document.getElementById("params-rows");
+const params_section = document.getElementById("params-section");
+const headerSection = document.getElementById("headers-section");
+const bodySection = document.getElementById("body-section");
+
 
 
 addqbsButtion.addEventListener("click", () => {
@@ -146,3 +154,39 @@ function collectqbs() {
 
 console.log(collectHeaders());
 console.log(collectqbs());
+
+
+
+
+function showSection(section,activeButton) {
+    params_section.style.display = "none";
+    headerSection.style.display = "none";
+    bodySection.style.display = "none";
+
+
+    params_button.classList.remove("active");
+    headers_button.classList.remove("active");
+    body_button.classList.remove("active");
+
+    section.style.display = "block";
+
+    activeButton.classList.add('active');
+}
+
+
+
+
+params_button.addEventListener("click", () => {
+    showSection(params_section,params_button);
+});
+
+headers_button.addEventListener("click", () => {
+    showSection(headerSection,headers_button);
+});
+
+body_button.addEventListener("click", () => {
+    showSection(bodySection,body_button);
+});
+
+
+
