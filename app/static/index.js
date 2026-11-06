@@ -15,9 +15,32 @@ const qbsSection = document.getElementById("params-rows");
 const params_section = document.getElementById("params-section");
 const headerSection = document.getElementById("headers-section");
 const bodySection = document.getElementById("body-section");
-
+const responseBodyContent = document.getElementById("response-body-content");
 const responseBodySection = document.getElementById("response-body-section");
 const responseHeadersSection = document.getElementById("response-headers-section");
+const copyResponseButton = document.getElementById("copy-response")
+let latestResponse = null;
+
+
+
+copyResponseButton.addEventListener("click", async () => {
+    try {
+        if (!latestResponse) {
+            alert("No response available to copy.");
+            return;
+        }
+
+        const responseText = JSON.stringify(latestResponse.body, null, 2);
+
+        await navigator.clipboard.writeText(responseText);
+
+        copyResponseButton.textContent = "Copied!";
+
+    } catch (error) {
+        console.error(error);
+        alert("Unable to copy response.");
+    }
+});
 
 
 addqbsButtion.addEventListener("click", () => {
@@ -44,7 +67,6 @@ addqbsButtion.addEventListener("click", () => {
 
 
 addheaderbutton.addEventListener("click", () => {
-
     const headerRow = document.createElement("div");
     headerRow.classList.add("header-row");
 
@@ -97,7 +119,8 @@ function highlightJSON(data) {
 sendButton.addEventListener('click', async () => {
 
     try {
-
+        sendButton.disabled = true;
+        sendButton.textContent = "checking.."
         const requestData = {
             method: methodSelect.value,
             url: urlInput.value,
@@ -116,8 +139,11 @@ sendButton.addEventListener('click', async () => {
             body: JSON.stringify(requestData)
         });
 
-        
+
+
         const result = await response.json();
+        latestResponse = result;
+        copyResponseButton.textContent = "copy response"
         const successMessage = document.getElementById("success-message");
         if (result.status_code >= 200 && result.status_code < 300){
             successMessage.textContent = "Hurrah! It worked"
@@ -136,7 +162,7 @@ sendButton.addEventListener('click', async () => {
             `Response Time: ${result.response_time.toFixed(2)} ms`;
 
 
-        responseBodySection.innerHTML = "<h3>Response Body</h3>";
+        responseBodyContent.innerHTML = "";
 
 
 
@@ -157,8 +183,8 @@ sendButton.addEventListener('click', async () => {
                 coreText.textContent = coreAnswer;
             }
 
-            responseBodySection.appendChild(coreHeading);
-            responseBodySection.appendChild(coreText);
+            responseBodyContent.appendChild(coreHeading);
+            responseBodyContent.appendChild(coreText);
         }
 
 
@@ -199,11 +225,14 @@ sendButton.addEventListener('click', async () => {
         responseHeadersSection.appendChild(headersDisplay);
 
 
-    } catch (error) {
-
+    }
+    catch (error) {
         console.error(error);
         alert(`Error: ${error.message}`);
 
+    }finally {
+        sendButton.disabled = false;
+        sendButton.textContent = "Send";
     }
 
 });
