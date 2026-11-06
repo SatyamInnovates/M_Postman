@@ -82,6 +82,7 @@ No installation is required. Open the link and start testing APIs directly from 
 
 *Note: JSONPlaceholder simulates write operations. Changes made through POST, PUT, PATCH, and DELETE requests are not permanently stored.*
 
+##It's not preferred to run it localy as i made it mostly for web but if you really want to then you can it will work.
 ## 💻 Run M_Postman Locally
 
 If you want to run M_Postman on your own machine, follow these steps.
@@ -127,16 +128,11 @@ pip install -r requirements.txt
 ### 6. Start the application
 
 ```bash
-uvicorn app.main:app --reload
+pip install -r requirements.txt
+fastapi dev app/main.py
 ```
 
-### 7. Open M_Postman
-
-Visit the following URL in your browser:
-
-```text
-http://127.0.0.1:8000
-```
+you will be guided in terminal
 
 **API Documentation:** `http://127.0.0.1:8000/docs`
 
