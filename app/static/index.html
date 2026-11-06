@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-
 <body>
 
     <h1 id="heading">M_Postman</h1>
@@ -30,7 +29,6 @@
         <button id="send">Send</button>
     </div>
 
-
     <div class="request-tabs">
 
         <div class="tab-buttons">
@@ -39,61 +37,55 @@
             <button id="body-tab">Body</button>
         </div>
 
+        <div id="params-section">
+            <h3>Query Parameters</h3>
 
-    <!-- Params -->
-    <div id="params-section">
-        <h3>Query Parameters</h3>
+            <div id="params-rows">
+                <div class="q_p_s">
+                    <input
+                        type="text"
+                        class="q_p_s-key"
+                        placeholder="Key (e.g. category)"
+                    >
 
-        <div id="params-rows">
-            <div class="q_p_s">
+                    <input
+                        type="text"
+                        class="q_p_s-value"
+                        placeholder="Value (e.g. books)"
+                    >
+                </div>
+            </div>
+            <button id="add_parameter" type="button">
+                + Add Parameter
+            </button>
+        </div>
+
+        <div id="headers-section">
+
+            <h3>Request Headers</h3>
+
+            <div class="header-row">
                 <input
                     type="text"
-                    class="q_p_s-key"
-                    placeholder="Key (e.g. category)"
+                    id="header_key"
+                    class="header-key"
+                    placeholder="Header Key"
                 >
 
                 <input
                     type="text"
-                    class="q_p_s-value"
-                    placeholder="Value (e.g. books)"
+                    id="header_value"
+                    class="header-value"
+                    placeholder="Header Value"
                 >
             </div>
+
+            <button id="add_header" type="button">
+                + Add Header
+            </button>
+
         </div>
 
-        <button id="add_parameter" type="button">
-            + Add Parameter
-        </button>
-    </div>
-
-
-    <div id="headers-section">
-
-        <h3>Request Headers</h3>
-
-        <div class="header-row">
-            <input
-                type="text"
-                id="header_key"
-                class="header-key"
-                placeholder="Header Key"
-            >
-
-            <input
-                type="text"
-                id="header_value"
-                class="header-value"
-                placeholder="Header Value"
-            >
-        </div>
-
-        <button id="add_header" type="button">
-            + Add Header
-        </button>
-
-    </div>    
-    
-        
-  
         <div id="body-section">
             <h3>Request Body (JSON)</h3>
 
@@ -106,34 +98,52 @@
     </div>
 
     <div class="response_txt">
-    <p id="success-message" style="display: none; color: #4ade80;">
-    ✓ Yes, it worked!
-    </p>
-    <h2>Response</h2>
 
-    
-    <div id="response-info-section">
-        <h3>Response Information</h3>
-        <p id="response-status">Status Code: --</p>
-        <p id="response-time">Response Time: --</p>
+        <p id="success-message" style="display: none; color: #4ade80;">
+            ✓ Yes, it worked!
+        </p>
+
+        <h2>Response</h2>
+
+        <div id="response-info-section">
+            <h3>Response Information</h3>
+            <p id="response-status">Status Code: --</p>
+            <p id="response-time">Response Time: --</p>
+        </div>
+        <div class="response-tabs">
+
+            <button id="response-body-tab" class="active">
+                Body
+            </button>
+
+            <button id="response-headers-tab">
+                Headers
+            </button>
+
+            <button id="response-cookies-tab">
+                Cookies
+            </button>
+
+        </div>
+        <div id="response-body-section">
+
+            <h3>Response Body</h3>
+
+            <button id="copy-response">
+                Copy Response
+            </button>
+
+            <div id="response-body-content"></div>
+
+        </div>
+        <div id="response-headers-section" style="display: none;">
+            <h3>Response Headers</h3>
+        </div>
+
+        <div id="response-cookies-section" style="display: none;">
+            <h3>Response Cookies</h3>
+        </div>
     </div>
-
-
-    <div id="response-body-section">
-    <h3>Response Body</h3>
-    <button id="copy-response">Copy Response</button>
-    <div id="response-body-content"></div>
-    </div>
-
-
-
-
-    <div id="response-headers-section">
-        <h3>Response Headers</h3>
-        <button id="copy-response">Copy</button>
-    </div>
-</div>
-
     <script src="index.js"></script>
 
 </body>

@@ -191,7 +191,8 @@ body {
 
 #response-info-section,
 #response-body-section,
-#response-headers-section {
+#response-headers-section,
+#response-cookies-section {
     margin-top: 15px;
     padding: 16px;
     border: 1px solid #e41414;
@@ -201,11 +202,16 @@ body {
 
 #response-info-section h3,
 #response-body-section h3,
-#response-headers-section h3 {
+#response-headers-section h3,
+#response-cookies-section h3 {
     font-size: 16px;
     color: #16803d;
     margin-top: 0;
     margin-bottom: 12px;
+}
+
+.cookie-item {
+    color: #000;
 }
 
 #response-info-section p {
@@ -215,7 +221,8 @@ body {
 }
 
 #response-body-section pre,
-#response-headers-section pre {
+#response-headers-section pre,
+#response-cookies-section pre {
     background-color: #000000;
     color: #ffffff;
     border: 1px solid #dce3eb;

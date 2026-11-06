@@ -1,4 +1,3 @@
-
 const urlInput = document.getElementById('url');
 const methodSelect = document.getElementById('method');
 const sendButton = document.getElementById('send');
@@ -6,11 +5,9 @@ const container = document.querySelector('.response_txt');
 const bodyInput = document.getElementById('request_body');
 const addheaderbutton = document.getElementById("add_header");
 const addqbsButtion = document.getElementById("add_parameter");
-
 const params_button = document.getElementById("params-tab");
 const headers_button = document.getElementById("headers-tab");
 const body_button = document.getElementById("body-tab");
-
 const qbsSection = document.getElementById("params-rows");
 const params_section = document.getElementById("params-section");
 const headerSection = document.getElementById("headers-section");
@@ -19,10 +16,36 @@ const responseBodyContent = document.getElementById("response-body-content");
 const responseBodySection = document.getElementById("response-body-section");
 const responseHeadersSection = document.getElementById("response-headers-section");
 const copyResponseButton = document.getElementById("copy-response")
+const responseBodyTab = document.getElementById("response-body-tab");
+const responseHeadersTab=document.getElementById("response-headers-tab")
+const responseCookiesTab=document.getElementById("response-cookies-tab");
+const responseCookiesSection = document.getElementById("response-cookies-section");
 let latestResponse = null;
 
 
+function showResponseSection(section,activeButton){
+    responseBodySection.style.display ="none";
+    responseHeadersSection.style.display = "none";
+    responseCookiesSection.style.display = "none";
+    responseHeadersTab.classList.remove('active')
+    responseBodyTab.classList.remove('active')
+    responseCookiesTab.classList.remove("active");
 
+    section.style.display = "block";
+    activeButton.classList.add("active");
+}
+
+
+responseBodyTab.addEventListener("click",() => {
+    showResponseSection(responseBodySection,responseBodyTab);
+})
+responseHeadersTab.addEventListener("click",() => {
+    showResponseSection(responseHeadersSection,responseHeadersTab);
+})
+responseCookiesTab.addEventListener("click",() => {
+    showResponseSection(responseCookiesSection,responseCookiesTab)
+})
+showResponseSection(responseBodySection, responseBodyTab);
 copyResponseButton.addEventListener("click", async () => {
     try {
         if (!latestResponse) {
@@ -97,20 +120,26 @@ function highlightJSON(data) {
         /("(?:\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(?=\s*:))|("(?:\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*")|\b(true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g,
 
         (match, key, string) => {
+            const safeMatch = match
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/\"/g, "&quot;")
+                .replace(/'/g, "&#39;");
 
             if (key) {
-                return `<span class="json-key">${key}</span>`;
+                return `<span class="json-key">${safeMatch}</span>`;
             }
 
             if (string) {
-                return `<span class="json-string">${string}</span>`;
+                return `<span class="json-string">${safeMatch}</span>`;
             }
 
             if (match === "true" || match === "false" || match === "null") {
-                return `<span class="json-value">${match}</span>`;
+                return `<span class="json-value">${safeMatch}</span>`;
             }
 
-            return `<span class="json-number">${match}</span>`;
+            return `<span class="json-number">${safeMatch}</span>`;
         }
     );
 }
@@ -123,15 +152,14 @@ sendButton.addEventListener('click', async () => {
         sendButton.textContent = "checking.."
         const requestData = {
             method: methodSelect.value,
-            url: urlInput.value,
+            url: new URL(urlInput.value.trim()).href,
             headers: collectHeaders(),
             params: collectqbs(),
             body: bodyInput.value ? JSON.parse(bodyInput.value) : null
         };
 
-        console.log("Sending headers:", requestData.headers);
-
-        const response = await fetch("http://127.0.0.1:8000/api/request", {
+        const apiBase = window.location.port === "5500" ? "http://127.0.0.1:8000" : "";
+        const response = await fetch(`${apiBase}/api/request`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -141,7 +169,16 @@ sendButton.addEventListener('click', async () => {
 
 
 
-        const result = await response.json();
+        const responseText = await response.text();
+        let result;
+        try {
+            result = JSON.parse(responseText);
+        } catch {
+            throw new Error(`API returned an empty or non-JSON response (${response.status}).`);
+        }
+        if (!response.ok) {
+            throw new Error(result.detail || `API request failed (${response.status}).`);
+        }
         latestResponse = result;
         copyResponseButton.textContent = "copy response"
         const successMessage = document.getElementById("success-message");
@@ -152,9 +189,6 @@ sendButton.addEventListener('click', async () => {
             successMessage.textContent = "Sorrt Man! Request failed";
             successMessage.style.display = "block";
         }
-        console.log(result);
-        console.log("Response body:", result.body);
-
         document.getElementById("response-status").textContent =
             `Status Code: ${result.status_code}`;
 
@@ -188,14 +222,12 @@ sendButton.addEventListener('click', async () => {
         }
 
 
-
-
         const responseBody = document.createElement("pre");
         responseBody.classList.add("json-response");
 
         responseBody.innerHTML = highlightJSON(result.body);
 
-        responseBodySection.appendChild(responseBody);
+        responseBodyContent.appendChild(responseBody);
 
 
         responseHeadersSection.innerHTML = "<h3>Useful Response Headers</h3>";
@@ -224,6 +256,43 @@ sendButton.addEventListener('click', async () => {
 
         responseHeadersSection.appendChild(headersDisplay);
 
+        responseCookiesSection.innerHTML = "<h3>Response Cookies</h3>";
+
+        const cookies = Array.isArray(result.cookies) ? result.cookies : [];
+
+        if (cookies.length === 0) {
+            const emptyMessage = document.createElement("p");
+            emptyMessage.textContent = "No cookies were returned with this response.";
+            responseCookiesSection.appendChild(emptyMessage);
+        }
+
+        cookies.forEach(cookie => {
+        const cookieDisplay = document.createElement("div");
+        cookieDisplay.classList.add("cookie-item");
+
+        const attributes = [
+            ["Name", cookie.name],
+            ["Value", cookie.value],
+            ["Domain", cookie.domain],
+            ["Path", cookie.path],
+            ["Secure", cookie.secure],
+            ["HttpOnly", cookie.httponly],
+            ["SameSite", cookie.samesite || "Not specified"]
+        ];
+
+        attributes.forEach(([label, value]) => {
+            const paragraph = document.createElement("p");
+            const strong = document.createElement("strong");
+
+            strong.textContent = label + ": ";
+            paragraph.appendChild(strong);
+            paragraph.appendChild(document.createTextNode(String(value)));
+
+            cookieDisplay.appendChild(paragraph);
+        });
+
+            responseCookiesSection.appendChild(cookieDisplay);
+        });
 
     }
     catch (error) {

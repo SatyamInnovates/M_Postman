@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from app.routers.requests import router
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 app = FastAPI(
     title="Mini Postman",
     description="A lightweight API testing tool",
@@ -15,6 +17,7 @@ app.add_middleware(
 )
 
 app.include_router(router)
+app.mount("/", StaticFiles(directory=Path(__file__).parent / "static", html=True), name="static")
 
 # main app here let me drink waterrr
 
