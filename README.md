@@ -179,17 +179,6 @@ M_Postman uses a FastAPI backend to process HTTP requests.
 
 *The response values above are illustrative.*
 
-## 🚀 Deployment
-
-M_Postman can be deployed as a FastAPI web service on platforms such as Render.
-
-Before deploying:
-
-1. Push the project to GitHub.
-2. Configure the production start command.
-3. Ensure the frontend uses relative API paths.
-4. Configure environment variables where required.
-5. Implement security protections before exposing the request proxy publicly.
 
 ## 🔒 Security Note
 
@@ -214,8 +203,6 @@ This project demonstrates practical knowledge of:
 ## 👨‍💻 Author
 
 **Satyam Kumar**
-
-GitHub: [Your GitHub Profile](https://github.com/your-username)
 
 ---
 
