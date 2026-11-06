@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from app.routers.requests import router
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -17,7 +18,11 @@ app.add_middleware(
 )
 
 app.include_router(router)
-app.mount("/", StaticFiles(directory=Path(__file__).parent / "static", html=True), name="static")
+app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
+
+@app.get("/")
+async def home():
+    return FileResponse(Path(__file__).parent / "static" / "index.html")
 
 # main app here let me drink waterrr
 
