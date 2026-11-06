@@ -1,4 +1,3 @@
-
 const urlInput = document.getElementById('url');
 const methodSelect = document.getElementById('method');
 const sendButton = document.getElementById('send');
@@ -6,17 +5,18 @@ const container = document.querySelector('.response_txt');
 const bodyInput = document.getElementById('request_body');
 const addheaderbutton = document.getElementById("add_header");
 const addqbsButtion = document.getElementById("add_parameter");
-const params_button = document.getElementById("params-tab")
 
-const headers_button = document.getElementById("headers-tab")
-const body_button = document.getElementById("body-tab")
+const params_button = document.getElementById("params-tab");
+const headers_button = document.getElementById("headers-tab");
+const body_button = document.getElementById("body-tab");
+
 const qbsSection = document.getElementById("params-rows");
 const params_section = document.getElementById("params-section");
 const headerSection = document.getElementById("headers-section");
 const bodySection = document.getElementById("body-section");
-const responseBodySection = document.getElementById("response-body-section")
-const responseHeadersSection = document.getElementById("response-headers-section"
-);
+
+const responseBodySection = document.getElementById("response-body-section");
+const responseHeadersSection = document.getElementById("response-headers-section");
 
 
 addqbsButtion.addEventListener("click", () => {
@@ -67,7 +67,9 @@ addheaderbutton.addEventListener("click", () => {
 
 
 sendButton.addEventListener('click', async () => {
+
     try {
+
         const requestData = {
             method: methodSelect.value,
             url: urlInput.value,
@@ -91,19 +93,17 @@ sendButton.addEventListener('click', async () => {
         console.log(result);
         console.log("Response body:", result.body);
 
-        container.innerHTML = "";
-        const heading = document.createElement("h3");
-        heading.textContent = `Status Code: ${result.status_code}`;
-        container.appendChild(heading);
+        document.getElementById("response-status").textContent =
+            `Status Code: ${result.status_code}`;
 
-        const time = document.createElement("p");
-        time.textContent = `Response Time: ${result.response_time.toFixed(2)} ms`;
-        container.appendChild(time);
+        document.getElementById("response-time").textContent =
+            `Response Time: ${result.response_time.toFixed(2)} ms`;
+
+        responseBodySection.innerHTML = "<h3>Response Body</h3>";
 
         const coreAnswer = result.body?.choices?.[0]?.message?.content;
 
         if (coreAnswer) {
-            const coreSection = document.createElement("div");
 
             const coreHeading = document.createElement("h3");
             coreHeading.textContent = "Core Answer";
@@ -111,22 +111,17 @@ sendButton.addEventListener('click', async () => {
             const coreText = document.createElement("pre");
             coreText.textContent = coreAnswer;
 
-            coreSection.appendChild(coreHeading);
-            coreSection.appendChild(coreText);
-            container.appendChild(coreSection);
+            responseBodySection.appendChild(coreHeading);
+            responseBodySection.appendChild(coreText);
         }
-
-        responseBodySection.innerHTML = "<h3>Response Body</h3>";
 
         const responseBody = document.createElement("pre");
         responseBody.textContent = JSON.stringify(result.body, null, 2);
 
         responseBodySection.appendChild(responseBody);
-        container.appendChild(responseBodySection);
 
 
         responseHeadersSection.innerHTML = "<h3>Useful Response Headers</h3>";
-
 
         const usefulHeaders = [
             "content-type",
@@ -135,12 +130,11 @@ sendButton.addEventListener('click', async () => {
             "server",
             "cache-control",
             "x-ratelimit-remaining-requests"
-        ]
+        ];
 
         const filteredHeaders = {};
 
         usefulHeaders.forEach(header => {
-            
             if (result.headers[header]) {
                 filteredHeaders[header] = result.headers[header];
             }
@@ -150,46 +144,55 @@ sendButton.addEventListener('click', async () => {
         headersDisplay.textContent = JSON.stringify(filteredHeaders, null, 2);
 
         responseHeadersSection.appendChild(headersDisplay);
-        container.appendChild(responseHeadersSection);
-        
+
     } catch (error) {
-        container.textContent = `Error: ${error.message}`;
+
         console.error(error);
+        alert(`Error: ${error.message}`);
+
     }
+
 });
 
 
 function collectHeaders() {
+
     const keys = document.querySelectorAll(".header-key");
     const values = document.querySelectorAll(".header-value");
 
     const headers = {};
 
     keys.forEach((key, index) => {
+
         const headerName = key.value.trim();
         const headerValue = values[index].value.trim();
 
         if (headerName && headerValue) {
             headers[headerName] = headerValue;
         }
+
     });
 
     return headers;
 }
 
+
 function collectqbs() {
+
     const keys = document.querySelectorAll(".q_p_s-key");
     const values = document.querySelectorAll(".q_p_s-value");
 
     const qbs_parameters = {};
 
     keys.forEach((key, index) => {
+
         const qpsName = key.value.trim();
         const qpsValue = values[index].value.trim();
 
         if (qpsName && qpsValue) {
             qbs_parameters[qpsName] = qpsValue;
         }
+
     });
 
     return qbs_parameters;
@@ -200,11 +203,11 @@ console.log(collectHeaders());
 console.log(collectqbs());
 
 
-function showSection(section,activeButton) {
+function showSection(section, activeButton) {
+
     params_section.style.display = "none";
     headerSection.style.display = "none";
     bodySection.style.display = "none";
-
 
     params_button.classList.remove("active");
     headers_button.classList.remove("active");
@@ -217,13 +220,16 @@ function showSection(section,activeButton) {
 
 
 params_button.addEventListener("click", () => {
-    showSection(params_section,params_button);
+    showSection(params_section, params_button);
 });
 
 headers_button.addEventListener("click", () => {
-    showSection(headerSection,headers_button);
+    showSection(headerSection, headers_button);
 });
 
 body_button.addEventListener("click", () => {
-    showSection(bodySection,body_button);
+    showSection(bodySection, body_button);
 });
+
+
+showSection(params_section, params_button);
