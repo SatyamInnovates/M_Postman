@@ -57,7 +57,9 @@ M_Postman/
 
 You can access the deployed version of M_Postman here:
 
-**Live Demo:** [M_Postman](https://your-deployed-url.onrender.com)
+**Live Demo:** [M_Postman](https://m-postman.onrender.com/)
+
+Wait a few seconds while it starts.
 
 No installation is required. Open the link and start testing APIs directly from your browser.
 
