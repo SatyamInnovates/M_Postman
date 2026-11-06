@@ -63,6 +63,7 @@ Wait a few seconds while it starts.
 
 No installation is required. Open the link and start testing APIs directly from your browser.
 
+It's not fully complete yet so there can be little information when error comes
 ### How to Test
 
 1. Open the deployed application.
