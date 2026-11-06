@@ -266,3 +266,38 @@ body {
         padding: 12px;
     }
 }
+
+
+.json-response {
+    max-height: 500px;
+    overflow: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+
+.json-key {
+    color: #569cd6;
+}
+
+.json-string {
+    color: #ce9178;
+}
+.json-number {
+    color: #b5cea8;
+}
+
+.json-value {
+    color: #c586c0;
+}
+
+.json-response {
+    background-color: #171923;
+    color: white;
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+

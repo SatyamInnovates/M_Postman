@@ -1,3 +1,4 @@
+
 const urlInput = document.getElementById('url');
 const methodSelect = document.getElementById('method');
 const sendButton = document.getElementById('send');
@@ -66,6 +67,33 @@ addheaderbutton.addEventListener("click", () => {
 });
 
 
+function highlightJSON(data) {
+
+    const formattedJSON = JSON.stringify(data, null, 2);
+
+    return formattedJSON.replace(
+        /("(?:\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(?=\s*:))|("(?:\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*")|\b(true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g,
+
+        (match, key, string) => {
+
+            if (key) {
+                return `<span class="json-key">${key}</span>`;
+            }
+
+            if (string) {
+                return `<span class="json-string">${string}</span>`;
+            }
+
+            if (match === "true" || match === "false" || match === "null") {
+                return `<span class="json-value">${match}</span>`;
+            }
+
+            return `<span class="json-number">${match}</span>`;
+        }
+    );
+}
+
+
 sendButton.addEventListener('click', async () => {
 
     try {
@@ -88,8 +116,16 @@ sendButton.addEventListener('click', async () => {
             body: JSON.stringify(requestData)
         });
 
+        
         const result = await response.json();
-
+        const successMessage = document.getElementById("success-message");
+        if (result.status_code >= 200 && result.status_code < 300){
+            successMessage.textContent = "Hurrah! It worked"
+            successMessage.style.display = "block";
+        }else {
+            successMessage.textContent = "Sorrt Man! Request failed";
+            successMessage.style.display = "block";
+        }
         console.log(result);
         console.log("Response body:", result.body);
 
@@ -99,7 +135,10 @@ sendButton.addEventListener('click', async () => {
         document.getElementById("response-time").textContent =
             `Response Time: ${result.response_time.toFixed(2)} ms`;
 
+
         responseBodySection.innerHTML = "<h3>Response Body</h3>";
+
+
 
         const coreAnswer = result.body?.choices?.[0]?.message?.content;
 
@@ -109,14 +148,26 @@ sendButton.addEventListener('click', async () => {
             coreHeading.textContent = "Core Answer";
 
             const coreText = document.createElement("pre");
-            coreText.textContent = coreAnswer;
+            coreText.classList.add("json-response");
+
+            try {
+                const parsedAnswer = JSON.parse(coreAnswer);
+                coreText.innerHTML = highlightJSON(parsedAnswer);
+            } catch {
+                coreText.textContent = coreAnswer;
+            }
 
             responseBodySection.appendChild(coreHeading);
             responseBodySection.appendChild(coreText);
         }
 
+
+
+
         const responseBody = document.createElement("pre");
-        responseBody.textContent = JSON.stringify(result.body, null, 2);
+        responseBody.classList.add("json-response");
+
+        responseBody.innerHTML = highlightJSON(result.body);
 
         responseBodySection.appendChild(responseBody);
 
@@ -141,9 +192,12 @@ sendButton.addEventListener('click', async () => {
         });
 
         const headersDisplay = document.createElement("pre");
-        headersDisplay.textContent = JSON.stringify(filteredHeaders, null, 2);
+        headersDisplay.classList.add("json-response");
+
+        headersDisplay.innerHTML = highlightJSON(filteredHeaders);
 
         responseHeadersSection.appendChild(headersDisplay);
+
 
     } catch (error) {
 
