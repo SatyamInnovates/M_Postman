@@ -76,7 +76,7 @@ Clone the repository and navigate to the project directory.
 
 
 ```bash
-git@github.com:SatyamInnovates/M_Postman.git
+git clone git@github.com:SatyamInnovates/M_Postman.git
 ```
 
 Create a virtual environment:
