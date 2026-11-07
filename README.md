@@ -1,201 +1,101 @@
 # M_Postman 🚀
 
-A lightweight, browser-based API testing tool inspired by Postman, built with **FastAPI, Python, HTTPX, and Vanilla JavaScript**.
+A lightweight, web-based API testing tool built with **FastAPI, Python, HTTPX, and Vanilla JavaScript**.
 
-M_Postman allows developers to send HTTP requests, configure headers and query parameters, submit JSON request bodies, and inspect server responses through a simple interface.
+Test APIs, configure requests, and inspect responses directly from your browser.
+
+## 🌐 Live Demo
+
+**[Open M_Postman](https://m-postman.onrender.com/)**
+
+*The free hosting service may take a few seconds to start.*
 
 ## ✨ Features
 
-- **HTTP Methods:** Supports GET, POST, PUT, PATCH, and DELETE.
-- **Custom Headers:** Add and configure request headers.
-- **Query Parameters:** Send query parameters with requests.
-- **Request Body:** Send JSON payloads for supported HTTP methods.
-- **Response Viewer:** View response status codes, headers, and body.
-- **Response Cookies:** Inspect cookies and their attributes.
-- **Response Time:** Measure how long a request takes.
-- **JSON Support:** Automatically parse JSON responses.
+- **HTTP Methods:** GET, POST, PUT, PATCH, DELETE.
+- **Custom Headers:** Add and manage request headers.
+- **Query Parameters:** Configure URL parameters.
+- **JSON Request Body:** Send JSON payloads.
+- **Response Viewer:** Inspect response status, headers, and body.
+- **Response Cookies:** View cookies and their attributes.
+- **Response Time:** Measure request execution time.
 - **Error Handling:** Handle request timeouts and connection errors.
-- **Simple Interface:** Lightweight frontend built with HTML, CSS, and JavaScript.
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| Python | Backend programming |
-| FastAPI | REST API framework |
-| HTTPX | Sending asynchronous HTTP requests |
-| Pydantic | Request data validation |
-| HTML | Frontend structure |
-| CSS | Frontend styling |
-| JavaScript | Frontend functionality |
+- Python
+- FastAPI
+- HTTPX
+- Pydantic
+- HTML, CSS, JavaScript
 
-## 📁 Project Structure
+## 📸 Screenshots
 
-```text
-M_Postman/
-│
-├── app/
-│   ├── main.py
-│   │
-│   ├── routers/
-│   │   └── requests.py
-│   │
-│   ├── schemas/
-│   │   └── request.py
-│   │
-│   └── static/
-│       ├── index.html
-│       ├── style.css
-│       └── index.js
-│
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
+*Screenshots of the application and API responses will be added here.*
 
-## 🌐 Try M_Postman Online
+## 💻 Run Locally (Optional)
 
-You can access the deployed version of M_Postman here:
+M_Postman is primarily designed to be used as a web application. However, you can also run it locally.
 
-**Live Demo:** [M_Postman](https://m-postman.onrender.com/)
+### Requirements
 
-Wait a few seconds while it starts.
+- Python 3.11+
+- Git
 
-No installation is required. Open the link and start testing APIs directly from your browser.
+### Setup
 
-It's not fully complete yet so there can be little information when error comes
-### How to Test
+Clone the repository from GitHub and navigate to its project directory.
 
-1. Open the deployed application.
-2. Select an HTTP method (GET, POST, PUT, PATCH, or DELETE).
-3. Enter an API endpoint URL.
-4. Add headers or query parameters if required.
-5. Provide a JSON request body for POST, PUT, or PATCH requests.
-6. Click **Send**.
-7. Inspect the response status, response time, headers, cookies, and body.
-
-### APIs Used for Testing
-
-- **JSONPlaceholder:** GET, POST, PUT, PATCH, and DELETE requests.
-- **HTTPBin:** Custom headers, query parameters, and cookies.
-- **Groq API:** Authenticated requests with JSON payloads.
-- **OpenWeatherMap API:** API requests using query parameters and API keys.
-
-*Note: JSONPlaceholder simulates write operations. Changes made through POST, PUT, PATCH, and DELETE requests are not permanently stored.*
-
-##It's not preferred to run it localy as i made it mostly for web but if you really want to then you can it will work.
-## 💻 Run M_Postman Locally
-
-If you want to run M_Postman on your own machine, follow these steps.
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/your-username/M_Postman.git
-```
-
-### 2. Navigate to the project directory
-
-```bash
-cd M_Postman
-```
-
-### 3. Create a virtual environment
+Create a virtual environment:
 
 ```bash
 python -m venv .venv
 ```
 
-### 4. Activate the virtual environment
+Activate it:
 
-**Linux / macOS:**
-
+**Linux / macOS**
 ```bash
 source .venv/bin/activate
 ```
 
-**Windows:**
-
+**Windows**
 ```bash
 .venv\Scripts\activate
 ```
 
-### 5. Install dependencies
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 6. Start the application
+Start the application:
 
 ```bash
-pip install -r requirements.txt
 fastapi dev app/main.py
 ```
 
-you will be guided in terminal
+Open the application:
 
-**API Documentation:** `http://127.0.0.1:8000/docs`
+```bash
+http://127.0.0.1:8000
+```
 
-## 🔌 API Endpoint
+API Documentation:
 
-M_Postman uses a FastAPI backend to process HTTP requests.
+```bash
+http://127.0.0.1:8000/docs
+```
+
+
+
+
+## 🔌 Backend API
 
 | Method | Endpoint | Description |
 |---|---|---|
-| POST | `/api/request` | Send an HTTP request to an external API |
-
-### Example Request
-
-```json
-{
-  "method": "GET",
-  "url": "https://jsonplaceholder.typicode.com/posts/1",
-  "headers": {},
-  "params": {},
-  "body": null
-}
-```
-
-### Example Response
-
-```json
-{
-  "status_code": 200,
-  "response_time": 120.5,
-  "headers": {},
-  "body": {
-    "userId": 1,
-    "id": 1,
-    "title": "Example title",
-    "body": "Example response body"
-  },
-  "cookies": []
-}
-```
-
-*The response values above are illustrative.*
-
-
-## 🔒 Security Note
-
-M_Postman forwards requests to external URLs. A publicly accessible deployment should implement protections against Server-Side Request Forgery (SSRF), unauthorized usage, abuse, and access to internal network resources.
-
-Never commit API keys, credentials, or other sensitive information to GitHub.
-
-## 🎯 Project Goal
-
-The goal of M_Postman is to understand how API testing tools work internally by building a simplified alternative from scratch.
-
-This project demonstrates practical knowledge of:
-
-- REST API development
-- Asynchronous HTTP requests
-- FastAPI routing
-- Pydantic validation
-- Frontend and backend integration
-- HTTP methods, headers, parameters, and responses
-- Error handling and API debugging
+| POST | `/api/request` | Sends an HTTP request to an external API |
 
 ## 👨‍💻 Author
 
@@ -203,4 +103,4 @@ This project demonstrates practical knowledge of:
 
 ---
 
-⭐ If you find this project useful, consider giving it a star!
+If you find M_Postman useful, consider giving the repository a ⭐.
