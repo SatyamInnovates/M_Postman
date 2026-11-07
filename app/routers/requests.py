@@ -7,12 +7,11 @@ from app.schemas.request import RequestSchema
 router = APIRouter(prefix="/api", tags=["Requests"])
 
 
-
 @router.post("/request")
 async def send_request(data: RequestSchema):
     start = time.perf_counter()
     try:
-        async with httpx.AsyncClient(timeout=15.0,follow_redirects=True) as client:
+        async with httpx.AsyncClient(timeout=10.0,follow_redirects=True) as client:
 
             response = await client.request(
                 method=data.method,
@@ -42,6 +41,8 @@ async def send_request(data: RequestSchema):
             cookies = list(response_cookies.values())
 
 
+
+
             end = time.perf_counter()
             try:
                 body = response.json()
@@ -50,13 +51,18 @@ async def send_request(data: RequestSchema):
     except httpx.TimeoutException:
         raise HTTPException(
             status_code=504,
-            detail="Request timed out"
+            detail="Request timed out. The server took too long to respond"
         )  
-
-    except httpx.RequestError:
+    except httpx.InvalidURL:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid URL. Please check the Api endpoint."
+        )
+    
+    except httpx.RequestError as error:
         raise HTTPException(
             status_code=502,
-            detail="request failed"
+            detail=f"Unable to connect to the target server: {str(error)}"
         )
     return {
                 "status_code": response.status_code,

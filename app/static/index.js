@@ -145,6 +145,7 @@ function highlightJSON(data) {
 }
 
 
+
 sendButton.addEventListener('click', async () => {
 
     try {
@@ -297,7 +298,16 @@ sendButton.addEventListener('click', async () => {
     }
     catch (error) {
         console.error(error);
-        alert(`Error: ${error.message}`);
+
+        latestResponse = null;
+        responseBodyContent.innerHTML = "";
+        const errorMessage = document.createElement("pre");
+        errorMessage.textContent = `Request Error\n\n${error.message}`
+        errorMessage.style.color = "#ef4444"
+
+        responseBodyContent.appendChild(errorMessage);
+
+        showResponseSection(responseBodySection,responseBodyTab);
 
     }finally {
         sendButton.disabled = false;
