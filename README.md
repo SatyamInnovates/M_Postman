@@ -74,6 +74,10 @@ M_Postman is designed to run as a web application, but you can also run it local
 
 Clone the repository and navigate to the project directory.
 
+bash```
+git clone https://github.com/SatyamInnovates/M_Postman.git
+```
+
 Create a virtual environment:
 
 ```bash
