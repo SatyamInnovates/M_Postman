@@ -6,7 +6,7 @@ Test APIs, configure requests, and inspect responses directly from your browser.
 
 ## 🌐 Live Demo
 
-**[Open M_Postman](https://m-postman.onrender.com/)**
+**[Open M_Postman](https://mpostman-production.up.railway.app/)**
 
 *The free hosting service may take a few seconds to start.*
 
